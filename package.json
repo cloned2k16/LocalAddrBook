@@ -1,0 +1,37 @@
+{
+  "name"            : "LocalAddrBook"
+ ,"description"     : "A simple SPA Addrress Book with local storage"
+ ,"license"         : "CC-BY-NC-4.0"
+ ,"version"         : "0.0.1"
+ ,"main"            : "server.js"
+ ,"scripts"         : {
+        "install"       : "bower install"
+       ,"test"          : "karma start karma.conf.js"
+       ,"start"         : "node server.js"
+  }
+ ,"repository": {
+        "type"          : "git"
+        ,"url"          : "https://github.com/cloned2k16/LocalAddrBook.git"
+  }
+ ,"keywords": [
+        "Angular" ,"ngStorage"
+  ]
+ ,"dependencies"    : {
+    "express"                   : "~4.13.0"
+   ,"morgan"                    : "~1.7.0"
+   ,"graceful-fs"               : "^4.0.0"
+   ,"jasmine-core"              : "^2.3.4"
+   ,"karma"                     : ""
+   ,"karma-chrome-launcher"     : ""
+   ,"karma-firefox-launcher"    : ""
+   ,"karma-jasmine"             : ""
+   ,"karma-phantomjs-launcher"  : ""
+   ,"phantomjs-prebuilt"        : ""
+   ,"karma-chai"                : ""
+   ,"karma-mocha"               : ""
+ }
+ ,"author"          : "Paolo Lioy"
+
+}
+  
+  
