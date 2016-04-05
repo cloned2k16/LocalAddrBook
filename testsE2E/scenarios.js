@@ -44,14 +44,14 @@ describe('LocalAddrBook', function() {
         });
   
         browser.get('/');
-        var people      = element.all(by.repeater('addr in people'));
-        var form        = element(by.id   ('formAddAddress'));
-        var firstName   = element(by.model('data.firstName' ));
-        var lastName    = element(by.model('data.lastName' ));
-        var eMail       = element(by.model('data.eMail'     ));
-        var country     = element(by.model('data.country'   ));
+        var people      = element.all   (by.repeater    ('addr in people'));
+        var form        = element       (by.id          ('formAddAddress'));
+        var firstName   = element       (by.model       ('data.firstName' ));
+        var lastName    = element       (by.model       ('data.lastName' ));
+        var eMail       = element       (by.model       ('data.eMail'     ));
+        var country     = element       (by.model       ('data.country'   ));
         
-  
+ 
         it('should reject input if only FirstName is set'               , function() {
             firstName.sendKeys('jack');
             form.submit();
@@ -101,6 +101,15 @@ describe('LocalAddrBook', function() {
             form.submit();
             expect(people.count()).toEqual(1); 
         });
+
+        it('should left no objecs after delete the first one'           , function() {
+            var bttnByCSS=by.css         ('.addr-remove'   );
+            expect(element.all  (bttnByCSS).count()).toEqual(1);
+            element             (bttnByCSS).click();
+            expect(people.count()).toEqual(0); 
+            browser.pause();
+        });
+        
         // .... and more ...
        
     });
