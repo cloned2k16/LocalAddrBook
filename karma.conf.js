@@ -1,5 +1,4 @@
  // Karma configuration
- 
     module.exports = function(config) {
         config.set({
 
@@ -15,15 +14,26 @@
         
         // list of files / patterns to load in the browser
         files: [
-            'public_html/**/*.js'
-           ,'test/**/*.spec.js'
-           ,'tests/**/*.spec.js'
+             'node_modules/chai/chai.js'
+            ,'/node_modules/angular-mocks/angular-mocks.js'
+            ,'public_html/**/*.js'
+            ,'test/**/*.spec.js'
+            ,'tests/**/*.spec.js'
         ],
 
         // list of files to exclude
         exclude: [
              '-'
             ,'public_html/country-list-master/**/'
+            ,'public_html/js/angular-animate.js'
+            ,'public_html/js/angular-messages.js'
+            
+            ,'public_html/js/angular.min.js'
+            ,'public_html/js/ngstorage.min.js'
+            ,'public_html/js/angular-animate.min.js'
+            ,'public_html/js/angular-messages.min.js'
+            
+        
         ],
 
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor

@@ -1,7 +1,5 @@
-var HARD_CODED = {};
-    HARD_CODED.COUNTRY_CODES =
 [{"name": "Afghanistan", "code": "AF"}, 
-{"name": "Åland Islands", "code": "AX"}, 
+{"name": "Åland Islands", "code": "AX"},
 {"name": "Albania", "code": "AL"}, 
 {"name": "Algeria", "code": "DZ"}, 
 {"name": "American Samoa", "code": "AS"}, 
@@ -243,4 +241,3 @@ var HARD_CODED = {};
 {"name": "Yemen", "code": "YE"}, 
 {"name": "Zambia", "code": "ZM"}, 
 {"name": "Zimbabwe", "code": "ZW"}]
-;

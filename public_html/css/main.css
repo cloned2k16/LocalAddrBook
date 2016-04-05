@@ -1,0 +1,125 @@
+body{
+    font-family:    sans-serif;
+    font-weight:    100;
+    background:     #EFE;
+}
+h1{
+    text-align:     center;
+    color:          #AEA;
+    text-shadow:    0px 2px 0px #fff;
+
+}
+.header {
+    background:     #0CAFE0;
+    border-radius:  3px;
+    margin:         0 auto;
+    box-shadow:     3px 5px 7px #666;
+    padding:        7px;
+}
+.removeAllBTTN {
+    position:       fixed; 
+    top:            8px; 
+    right:          8px;
+}
+
+.name{
+    font-size:      18px; 
+}
+
+.city{
+   font-style:      italic;
+   font-size:       13px;
+}
+
+.addr-list{
+   visibility:      hidden;
+   border-radius:   3px;
+   margin:          0 auto;
+   box-shadow:      3px 5px 7px #666;
+   background:      #69BABE;
+   padding:         0px;
+}
+
+.addr-item{
+   background:      #EFA;
+   padding:         20px;
+}
+.addr-name{
+   border-bottom:   thin solid #999; 
+   padding:         8px;
+}
+.addr-last{
+   font-weight:      bold;
+   border-bottom:   thin solid #999; 
+   padding:         8px;
+}
+.addr-email{
+   border-bottom:   thin solid #999; 
+   padding:         8px;
+}
+.addr-country{
+   border-bottom:   thin solid #999; 
+   padding:         8px;
+}
+.addr-remove-div{
+    
+}
+.addr-remove{
+   background:      url(../img/trash_icon.png) no-repeat ;
+   cursor:          pointer;
+   
+   width:           37px;
+   height:          34px;
+}
+.addr-remove:active{
+
+}
+
+.header{
+}
+
+.newAddrBox {
+   border-radius:   3px;
+   margin:          0 auto;
+   box-shadow:      3px 5px 7px #666;
+   background:      #ACD;
+   padding:         7px;
+}
+.newAddr {
+  margin-left:auto;
+  margin-right:auto;
+  margin-top: 25px;
+  padding: 20px 20px 20px 20px;
+  font: 12px Arial, Helvetica, sans-serif;
+  color: #123;
+}
+.newAddr label {
+  display: block;
+  margin: 0px 0px 5px;
+}
+.newAddr input[type="text"], 
+.newAddr input[type="email"], 
+.newAddr textarea {
+  color: #888;
+  width: 50%;
+  padding: 0px 0px 0px 5px;
+  border: 1px solid #C5E2FF;
+  background: #FBFBFB;
+  outline: 0;
+  -webkit-box-shadow:inset 0px 1px 6px #ECF3F5;
+  box-shadow: inset 0px 1px 6px #ECF3F5;
+  font: 200 12px/25px Arial, Helvetica, sans-serif;
+  height: 30px;
+  line-height:15px;
+  margin: 2px 6px 16px 0px;
+}
+.newAddr textarea{
+  height:100px;
+  padding: 5px 0px 0px 5px;
+  width: 60%;
+}
+.newAddr div{
+  display: inline;
+  vertical-align:top;
+}
+

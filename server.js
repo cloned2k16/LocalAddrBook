@@ -1,4 +1,4 @@
- // server.js
+// server.js
 
     // ====================================================== Set Up
     var express         = require('express');
@@ -16,4 +16,14 @@
     // ====================================================== Handy short-cuts 
     var _               = _         || {};
         _.LOG           = DRY.log;
-_.LOG('here we go ..');
+    // ====================================================== Configuration
+    var PUBLIC_HTML     = '/public_html'; 
+        DRY.listenPort  = 1111;
+    // ====================================================== Application
+    app.use(express.static(__dirname + PUBLIC_HTML));                       //
+    app.use(morgan('dev'));                                                 // log every request to the console
+    app.use(function(req, res){ res.sendStatus(404);});                     // simply NOT FOUND
+    // ====================================================== Main Loop
+    app.listen(DRY.listenPort);
+    DRY.log("Express server listening on http://localhost:"+DRY.listenPort+"/");
+ 
