@@ -5,6 +5,7 @@ A single Page App that stores your contact address to a local storage available 
 
 
 __How to run it__ 
+
 Either ..
 * by just open /public_html/index.html in your browser 
 * by using npm start then pointing your browser to http://localhost:1111/
