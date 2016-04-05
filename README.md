@@ -12,12 +12,12 @@ Either ..
 
 
 ### Installation
-* On Windows
+* __On Windows__
 1. build_all.bat 
 1. start.bat
 1. testE2E.bat
 
-* On @nix
+* __On @nix__
 1. npm install
 1. (copy bower files to /js folder)
 1. npm test
