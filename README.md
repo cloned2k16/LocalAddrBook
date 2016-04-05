@@ -21,11 +21,11 @@ Either ..
 
 * __On @nix__
 ``` cli 
-1. npm install
-1. (copy bower files to /js folder)
-1. npm test
-1. npm start
-1. protractor testse2e/protractor.conf.js
+* npm install
+* (copy bower files to /js folder)
+* npm test
+* npm start
+* protractor testse2e/protractor.conf.js
 ``` 
 
 
