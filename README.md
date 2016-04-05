@@ -13,9 +13,9 @@ Either ..
 
 ### Installation
 * On Windows
-1. build_all 
-1. start
-1. testE2E
+1. build_all.bat 
+1. start.bat
+1. testE2E.bat
 
 * On @nix
 1. npm install
