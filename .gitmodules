@@ -1,3 +1,0 @@
-[submodule "country-list"]
-	path = country-list
-	url = https://github.com/datasets/country-list.git
