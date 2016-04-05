@@ -14,18 +14,18 @@ Either ..
 ### Installation
 * __On Windows__
 ``` cli
-1. build_all.bat 
-1. start.bat
-1. testE2E.bat
+1 build_all.bat 
+2 start.bat
+3 testE2E.bat
 ``` 
 
 * __On @nix__
 ``` cli 
-* npm install
-* (copy bower files to /js folder)
-* npm test
-* npm start
-* protractor testse2e/protractor.conf.js
+1 npm install
+2 (copy bower files to /js folder)
+3 npm test
+4 npm start
+5 protractor testse2e/protractor.conf.js
 ``` 
 
 
