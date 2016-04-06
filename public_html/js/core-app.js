@@ -11,7 +11,7 @@ var _APP = {
     _APP.byClass                = function (c){ return angular.element(document.getElementsByClassName(c)); };
     
     _APP.default_view           = 1;
-    _APP.fillFormWithFakeData   = 1;
+    _APP.fillFormWithFakeData   = 0;
 // Personal Logger  ----------------------------------------------------------    
     _APP.log            = function ()       { 
      var a = [];
@@ -200,10 +200,9 @@ var _APP = {
 
        
         
-        $scope.submit = function() {
+        $scope.submit = function() { _.log('submit',data,_.log.debug);
          var data=$scope.data;
-         _.log('submit',data);
-         data.firstNameErr=data.lastNameErr=''; //clear errors;
+         //data.firstNameErr=data.lastNameErr=''; //clear errors;
          if ( typeof(data)              ==_.ND 
            || typeof(data.firstName)    ==_.ND //required
            || typeof(data.lastName)     ==_.ND //required
@@ -211,8 +210,8 @@ var _APP = {
            || typeof(data.country)      ==_.ND //required
            ){
            _.log('incomplete or wrong data',data,_.log.warning);
-           if (typeof(data.firstName)    ==_.ND) data.firstNameErr='ERROR!';
-           if (typeof(data.lastName )    ==_.ND) data.lastNameErr ='ERROR!';
+           //if (typeof(data.firstName)    ==_.ND) data.firstNameErr='ERROR!';
+           //if (typeof(data.lastName )    ==_.ND) data.lastNameErr ='ERROR!';
          }
          else {
             
