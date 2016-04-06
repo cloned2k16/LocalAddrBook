@@ -171,14 +171,16 @@ var _APP = {
         _.FormCTRL.session  = $sessionStorage;
        
         { //try to get country list online
-         $http.get('./data/locations.json')
-            .success(function(data) {
+         $http({    method: 'GET'
+                   ,url:    './data/locations.json'})
+            .then(function(data) {
              _.log('http country codes:',data);
                 _.REMOTE_COUNTRY_CODES = data;
                 _.boot();
-            })
-            .error(function(err){ // Cross origin request or not found ¿?
-             _.log('Looks like we are offline..',err,_.log.error);
+            },
+             function(err){ // Cross origin request or not found ¿?
+             _.log('$http{err}',err,err.data,err.status,err.statusText      ,_.log.error);
+             _.log('Looks like we are offline..',$http.status               ,_.log.info);
              _.boot();
             });
         };      
