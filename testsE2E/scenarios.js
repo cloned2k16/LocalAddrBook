@@ -107,7 +107,7 @@ describe('LocalAddrBook', function() {
             expect(element.all  (bttnByCSS).count()).toEqual(1);
             element             (bttnByCSS).click();
             expect(people.count()).toEqual(0); 
-            browser.pause();
+            //browser.pause();
         });
         
         // .... and more ...
