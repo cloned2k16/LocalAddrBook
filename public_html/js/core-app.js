@@ -172,7 +172,7 @@ var _APP = {
        
         { //try to get country list online
          $http({   method: 'GET'
-                  ,   url: './dat a/locations.json' })
+                  ,   url: './data/locations.json' })
             .then(function(res) {
                 _.log('http country codes:' , res.data            ,_.log.info);
                 _.REMOTE_COUNTRY_CODES      = res.data;
