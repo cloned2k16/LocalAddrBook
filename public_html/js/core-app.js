@@ -180,7 +180,7 @@ var _APP = {
             },
              function(err){ // Cross origin request or not found ¿?
              _.log('$http{err}',err,err.data,err.status,err.statusText      ,_.log.error);
-             _.log('Looks like we are offline..',$http.status               ,_.log.info);
+             _.log('Looks like we are offline..',err.status                 ,_.log.info);
              _.boot();
             });
         };      
