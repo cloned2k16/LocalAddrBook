@@ -171,20 +171,17 @@ var _APP = {
         _.FormCTRL.session  = $sessionStorage;
        
         { //try to get country list online
-         $http({    method: 'GET'
-                   ,url:    './data/locations.json'})
-            .then(function(data) {
-             _.log('http country codes:',data);
+         $http.get('./data/locations.json')
+            .success(function(data) {
+                _.log('http country codes:',data            ,_.log.info);
                 _.REMOTE_COUNTRY_CODES = data;
                 _.boot();
-            },
-             function(err){ // Cross origin request or not found ¿?
-             _.log('$http{err}',err,err.data,err.status,err.statusText      ,_.log.error);
-             _.log('Looks like we are offline..',err.status                 ,_.log.info);
+            })
+            .error(function(err){ // Cross origin request or not found ¿?
+             _.log('Looks like we are offline..',err        ,_.log.error);
              _.boot();
             });
-        };      
- 
+        };       
 
         $scope.items        =  [ {id:''         ,label:'LIST VIEW'}
                                 ,{id:'addAddr'  ,label:'ADD ADDRESS'}
