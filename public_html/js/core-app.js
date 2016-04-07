@@ -203,6 +203,19 @@ var _APP = {
                 });
             };       
 
+            $scope.removeAddress=function (idx,from ) { _.log('AddressBookCTRL::removeAddress',idx,from  ,_.log.debug);
+                if (_.isND(from)){
+                 _.log("ERROR: there's no people here!!",_.log.error);
+                 return;
+                }
+                var len=from.length;
+                for (var i=0; i<len; i++){
+                    if (from[i].idx==idx) { 
+                        from.splice(i,1);
+                        break;
+                    }
+                }
+            }
         });
  
         app.controller      ('AddressBookCTRL'    ,   function ($scope,$http,$localStorage){
@@ -213,21 +226,6 @@ var _APP = {
             _.AddressBookCTRL.DB    = $localStorage;
             $scope.people           = $localStorage.people;
         
-            $scope.removeAddress=function (idx) { _.log('AddressBookCTRL::removeAddress',idx,_.log.debug);
-                var DB=$localStorage;
-                if (_.isND(DB.people)){
-                 _.log("ERROR: there's no people here!!",_.log.error);
-                 return;
-                }
-                var len=DB.people.length;
-                for (var i=0; i<len; i++){
-                    if (DB.people[i].idx==idx) { 
-                        DB.people.splice(i,1);
-                        break;
-                    }
-                }
-                $scope.people       = DB.people; // refresh (maybe unnecesary) DODO ( check it! )
-            }
         });
     
         app.controller      ('FormCTRL'           ,   function ($scope,$http,$localStorage,$sessionStorage){
@@ -256,7 +254,10 @@ var _APP = {
                                                         ,       country:   'ES'                 
                                                         } : {};
 
-            $scope.removeAddress= function(idx) { _.AddressBookCTRL.scope.removeAddress(idx); }
+            $scope.removeAddress= function(idx) { 
+             _.log("FormCTRL::removeAddress");
+             _.MainCTRL.scope.removeAddress(idx,_.MainCTRL.DB.newPeople); 
+            }
         
             $scope.submit       = function() { _.log('submit',data,_.log.debug);
                 var data=$scope.data;

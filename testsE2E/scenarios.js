@@ -4,52 +4,41 @@ describe('LocalAddrBook', function() {
 
         it ('should bring you to the home page', function() {
             browser.get('/#/add');
-            expect(browser.getLocationAbsUrl()).toMatch("#");
+            expect(browser.getLocationAbsUrl()).toMatch("/");
         });
         
-        it ('should stay on the home page', function() {
+        it ('should switch to the add Address page', function() {
             browser.get('/');
-            expect(browser.getLocationAbsUrl()).toMatch("#");
+            var lnk=element(by.id( 'addLnk'));
+            lnk.click();
+            expect(browser.getLocationAbsUrl()).toMatch("/add");
         });
 
-
-    describe('FirstName error display'                                , function() {
-
+    describe('Incomplete form validation           ' , function() {
         beforeEach(function() {
-            browser.get('/');
         });
 
+        var lastNameErr=element(by.id('lastNameErr'));
 
         it('should check errors in First Name', function() {
             expect(element.all(by.css('[ng-view] div')).first().getText()).
             toMatch('First Name is required');
         });
 
-    });
-  
-    describe('LastName error display'                                 , function() {
-
-        beforeEach(function() {
-        browser.get('/');
-        });
-
-
         it('should check errors in Last Name', function() {
-            var el=element(by.id('lastNameErr'));
-            expect(el.getText()).
+            expect(lastNameErr.getText()).
             toMatch('Last Name is required');
         });
-    
-
+        
     });
   
+ 
     describe('AddAddress Form validation'                             , function() {
         beforeEach(function() {
          //browser.pause(); 
         });
-  
-        browser.get('/');
-        var people      = element.all   (by.repeater    ('addr in people'));
+        
+        var people      = element.all   (by.repeater    ('addr in newPeople'));
         var form        = element       (by.id          ('formAddAddress'));
         var firstName   = element       (by.model       ('data.firstName' ));
         var lastName    = element       (by.model       ('data.lastName' ));
@@ -112,7 +101,7 @@ describe('LocalAddrBook', function() {
             expect(element.all  (bttnByCSS).count()).toEqual(1);
             element             (bttnByCSS).click();
             expect(people.count()).toEqual(0); 
-            //browser.pause();
+            
         });
         
         // .... and more ...
@@ -120,5 +109,6 @@ describe('LocalAddrBook', function() {
     });
 
     //TODO .... put more test here ...
-});
+});    
+
     
