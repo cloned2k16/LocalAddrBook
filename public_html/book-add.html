@@ -18,7 +18,7 @@
         ng-model="data.firstName" 
         required
         />
-      <div ng-messages="addAddrForm.firstName.$error"  id="firstNameErr"> 
+      <div ng-messages="addAddrForm.firstName.$error"> 
        <div ng-message="required">First Name is required</div>
      </div>
     </div> 
@@ -32,7 +32,7 @@
         ng-model="data.lastName" 
         required 
         />
-      <div  ng-messages="addAddrForm.lastName.$error" id="lastNameErr"      >
+      <div  ng-messages="addAddrForm.lastName.$error">
        <div ng-message="required">Last Name is required</div>
      </div>
     </div> 

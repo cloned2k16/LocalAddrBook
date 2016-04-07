@@ -2,38 +2,44 @@
 
 describe('LocalAddrBook', function() {
 
-        it ('should bring you to the home page', function() {
-            browser.get('/#/add');
-            expect(browser.getLocationAbsUrl()).toMatch("/");
-        });
+    it      ('should bring you to the home page'                        , function() {
+        browser.get('/#/add');
+        expect(browser.getLocationAbsUrl()).toMatch("/");
+    });
         
-        it ('should switch to the add Address page', function() {
-            browser.get('/');
-            var lnk=element(by.id( 'addLnk'));
-            lnk.click();
-            expect(browser.getLocationAbsUrl()).toMatch("/add");
-        });
+    it      ('should switch to the "/add" address page'                 , function() {
+        browser.get('/');
+        var lnk=element(by.id( 'addLnk'));
+        lnk.click();
+        expect(browser.getLocationAbsUrl()).toMatch("/add");
+    });
 
-    describe('Incomplete form validation           ' , function() {
+    describe('check for validation messages to be in place'             , function() {
         beforeEach(function() {
         });
 
-        var lastNameErr=element(by.id('lastNameErr'));
-
-        it('should check errors in First Name', function() {
-            expect(element.all(by.css('[ng-view] div')).first().getText()).
-            toMatch('First Name is required');
+        var errMessages = element.all(by.css('div [ng-message]'));
+      
+        it('should show error in First Name', function() {
+            expect(errMessages.get(0).getText()).toMatch('First Name is required');
         });
 
-        it('should check errors in Last Name', function() {
-            expect(lastNameErr.getText()).
-            toMatch('Last Name is required');
+        it('should show error in Last Name', function() {
+            expect(errMessages.get(1).getText()).toMatch('Last Name is required');
+        });
+
+        it('should show error in eMail', function() {
+            expect(errMessages.get(2).getText()).toMatch('EMail is required');
+        });
+
+        it('should show error in country selection', function() {
+            expect(errMessages.get(3).getText()).toMatch('Please select a location');
         });
         
     });
   
  
-    describe('AddAddress Form validation'                             , function() {
+    describe('basic AddAddress Form validation'                         , function() {
         beforeEach(function() {
          //browser.pause(); 
         });
@@ -104,10 +110,29 @@ describe('LocalAddrBook', function() {
             
         });
         
-        // .... and more ...
+         
+        
        
     });
 
+    
+    //Here we go TDD :D
+    describe('switch to Address List view and check the DB'             , function() { 
+     it('should switch to list view page'                               , function() {
+        var lnk=element(by.id( 'lstLnk'));
+        lnk.click();
+        expect(browser.getLocationAbsUrl()).toMatch("/");
+      }); 
+      
+      var people      = element.all   (by.repeater    ('addr in people'));
+      
+      it('should have only 0 people in the list'                         , function() {
+       expect(people.count()).toEqual(0); 
+      });     
+      
+    });
+    
+    
     //TODO .... put more test here ...
 });    
 
