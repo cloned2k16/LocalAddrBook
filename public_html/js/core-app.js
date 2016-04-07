@@ -225,6 +225,12 @@ var _APP = {
             _.AddressBookCTRL.http  = $http;
             _.AddressBookCTRL.DB    = $localStorage;
             $scope.people           = $localStorage.people;
+            
+            $scope.removeAddress= function(idx) { 
+             _.log("FormCTRL::removeAddress");
+             _.MainCTRL.scope.removeAddress(idx,$localStorage.people); 
+            };
+
         
         });
     
@@ -256,8 +262,8 @@ var _APP = {
 
             $scope.removeAddress= function(idx) { 
              _.log("FormCTRL::removeAddress");
-             _.MainCTRL.scope.removeAddress(idx,_.MainCTRL.DB.newPeople); 
-            }
+             _.MainCTRL.scope.removeAddress(idx,$localStorage.newPeople); 
+            };
         
             $scope.submit       = function() { _.log('submit',data,_.log.debug);
                 var data=$scope.data;
