@@ -2,9 +2,14 @@
 
 describe('LocalAddrBook', function() {
 
+        it ('should bring you to the home page', function() {
+            browser.get('/#/add');
+            expect(browser.getLocationAbsUrl()).toMatch("#");
+        });
+        
         it ('should stay on the home page', function() {
             browser.get('/');
-            expect(browser.getLocationAbsUrl()).toMatch("");
+            expect(browser.getLocationAbsUrl()).toMatch("#");
         });
 
 

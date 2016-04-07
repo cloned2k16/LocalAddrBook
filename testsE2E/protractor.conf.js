@@ -4,13 +4,13 @@ exports.config = {
   specs: [
     '*.js'
   ],
-  x_capabilities: {
+  capabilities: {
     'browserName': 'chrome',
         'chromeOptions': {
             'args': ['show-fps-counter=true']
     }
     },
-  multiCapabilities: [    { 'browserName': 'firefox'}
+  x_multiCapabilities: [    { 'browserName': 'firefox'}
                         ,   { 'browserName': 'chrome'}
   ],
 
