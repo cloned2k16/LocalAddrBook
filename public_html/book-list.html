@@ -1,0 +1,12 @@
+  <div ng-controller="AddressBookCTRL" class="addr-list"> 
+   <table align=center width="100%">
+    <tr class="addr-item" ng-repeat="addr in people | orderBy:'-lastName'">
+     <td><div class="addr-idx"         hidden>{{addr.idx}}</div></td>
+     <td><div class="addr-name"        >{{addr.firstName}}</div></td>
+     <td><div class="addr-last"        >{{addr.lastName}}</div></td>
+     <td><div class="addr-email"       >{{addr.eMail}}</div></td>
+     <td><div class="addr-country"     >{{addr.country}}</div></td>
+     <td><div class="addr-remove-div"  ><button class="addr-remove" ng-click="removeAddress(addr.idx)"></button></div></td>
+   </tr>
+  </table> 
+ </div>   

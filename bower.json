@@ -17,6 +17,8 @@
     "angular"           :   "^1.5.3",
     "ngstorage"         :   "^0.3.10",
     "angular-messages"  :   "",
-    "angular-animate"   :   ""
+    "angular-animate"   :   "",
+    "bootstrap"         :   "",
+    "angular-route"     :   ""
   }
 }

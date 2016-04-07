@@ -1,0 +1,84 @@
+ <div ng-controller="FormCTRL" >
+  <div class="newAddrBox" >
+   <form  name="addAddrForm" 
+          class="newAddr"
+          ng-submit="submit()" 
+          validate
+          id="formAddAddress"
+          >
+     
+
+    <div><!-- firstName -->
+     <label>First Name:</label>
+      <input 
+        type="text" 
+        name="firstName" 
+        
+        ng-maxlength="16"
+        ng-model="data.firstName" 
+        required
+        />
+      <div ng-messages="addAddrForm.firstName.$error"  id="firstNameErr"> 
+       <div ng-message="required">First Name is required</div>
+     </div>
+    </div> 
+    <div><!-- lastName  -->
+     <label>Last Name:</label>
+      <input 
+        type="text" 
+        name="lastName" 
+       
+        ng-maxlength="33"
+        ng-model="data.lastName" 
+        required 
+        />
+      <div  ng-messages="addAddrForm.lastName.$error" id="lastNameErr"      >
+       <div ng-message="required">Last Name is required</div>
+     </div>
+    </div> 
+    <div><!-- eMail     -->
+     <label>Email Address:</label>
+      <input 
+        type="email" 
+        name="eMail" 
+        
+        ng-maxlength="48"
+        ng-model="data.eMail" 
+        required
+        />
+      <div ng-messages="addAddrForm.eMail.$error">
+       <div ng-message="required">EMail is required</div>
+       <div ng-message="email">Your email address is invalid</div>
+     </div>
+    </div>     
+    <div><!-- country   -->     
+     <label>Country:</label>
+      <select 
+              name="country"
+              ng-model="data.country" 
+              ng-options="location.code as location.name for location in locations"
+              required
+              >
+      <option value="">-- please chose country --</option>
+     </select>
+      <div ng-messages="addAddrForm.country.$error">
+        <div ng-message="required">Please select a location</div>
+     </div>
+    </div>   
+    <div><!-- submit    -->   
+     <hr/>
+     <div ><input type="submit" /></div>
+   </div> 
+  </form>
+ </div>
+    <table align=center width="100%">
+    <tr class="addr-item" ng-repeat="addr in newPeople | orderBy:'-lastName'">
+     <td><div class="addr-idx"         hidden>{{addr.idx}}</div></td>
+     <td><div class="addr-name"        >{{addr.firstName}}</div></td>
+     <td><div class="addr-last"        >{{addr.lastName}}</div></td>
+     <td><div class="addr-email"       >{{addr.eMail}}</div></td>
+     <td><div class="addr-country"     >{{addr.country}}</div></td>
+     <td><div class="addr-remove-div"  ><button class="addr-remove" ng-click="removeAddress(addr.idx)"></button></div></td>
+   </tr>
+  </table> 
+</div>   

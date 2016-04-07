@@ -12,6 +12,10 @@ var _APP = {
     
     _APP.default_view           = 1;
     _APP.fillFormWithFakeData   = 0;
+    
+    _APP.defaultGetVerb         = 'GET';
+    _APP.countryCodesGetVerb    = _APP.defaultGetVerb;
+    _APP.countryCodesURL        = './data/locations.json';
 // Personal Logger  ----------------------------------------------------------    
     _APP.log            = function ()       { 
      var a = [];
@@ -82,12 +86,13 @@ var _APP = {
         
         _.COUNTRY_CODES     = HARD_CODED.COUNTRY_CODES; 
                        delete HARD_CODED.COUNTRY_CODES; //Make sure we don't use it anywhere else
-        console.log("DB is:",_.AddressBookCTRL.DB);
         
-        var DB              = _.AddressBookCTRL.DB;
+        var DB              = _.MainCTRL.DB;
             DB.data         = DB.data || [];
+            delete            DB.newPeople; // clean up whatever happens to left people there
         _.DB_COUNTRY_CODES  = DB.COUNTRY_CODES;
-
+        
+        
         _.log('storage count:',DB.data,DB.idx,_.log.debug);
         if (_.isLOGDebugEn()) {
             var str= '[';
@@ -106,16 +111,16 @@ var _APP = {
             _.log('something whent really wrong!!',_.log.panic);
            
           } else{ 
-                  _.FormCTRL.scope.locations = _.COUNTRY_CODES;        _.log('country codes comes from: HARD CODED'       ,_.log.info);  
+                  _.MainCTRL.scope.locations = _.COUNTRY_CODES;        _.log('country codes comes from: HARD CODED'       ,_.log.info);  
                   DB.COUNTRY_CODES = _.COUNTRY_CODES;
             }
          }  else{ 
-                  _.FormCTRL.scope.locations = _.DB_COUNTRY_CODES;     _.log('country codes comes from: LOCAL STORAGE'    ,_.log.info);  
+                  _.MainCTRL.scope.locations = _.DB_COUNTRY_CODES;     _.log('country codes comes from: LOCAL STORAGE'    ,_.log.info);  
                   
             }
-        }   else{ _.FormCTRL.scope.locations = _.REMOTE_COUNTRY_CODES; _.log('country codes comes from: SERVER'           ,_.log.info);  }
+        }   else{ _.MainCTRL.scope.locations = _.REMOTE_COUNTRY_CODES; _.log('country codes comes from: SERVER'           ,_.log.info);  }
         
-        _.log('locations:',_.FormCTRL.scope.locations,_.log.debug);
+        _.log('locations:',_.MainCTRL.scope.locations,_.log.debug);
         
     };
     _APP.removeAll      = function() {   _.log('removeAll()',_.log.verbose); //Helper function
@@ -125,7 +130,7 @@ var _APP = {
 // ---------------------------------------------------------------------------------------------------------------------
     var _ = _APP;
                 {       _.LOG_LEVELS     = 0
-                        //| _APP.log.verbose .logT
+                        | _APP.log.verbose .logT
                         //| _APP.log.debug   .logT
                         | _APP.log.info    .logT
                         //| _APP.log.warning .logT
@@ -137,106 +142,162 @@ var _APP = {
 
     var app = angular.module(   'app'                      //bootstrapping angular and adding ngStorage 'n' ngMessages modules
                             , [ 'ngStorage'
+                            ,   'ngRoute'
                             ,   'ngAnimate'
                             ,   'ngMessages' ] 
                             );
-    
-    app.controller('AddressBookCTRL'    ,function ($scope,$http,$localStorage){
-        _.log('AddressBookCTRL:',$scope,$http,$localStorage,_.log.verbose);
-        _.AddressBookCTRL=this;
-        _.AddressBookCTRL.scope =$scope;
-        _.AddressBookCTRL.http  =$http;
-        _.AddressBookCTRL.DB    =$localStorage;
-        $scope.people           =$localStorage.data;
-        
-        $scope.removeAddress=function (idx) { _.log('removeAddress',idx,_.log.debug);
-         var DB=$localStorage;
-         var len=DB.data.length;
-         for (var i=0; i<len; i++){
-            if (DB.data[i].idx==idx) { 
-             DB.data.splice(i,1);
-             break;
-            }
-         }
-         $scope.people       = DB.data; // refresh (maybe unnecesary) DODO ( check it! )
-        }
-    });
-    
-    app.controller('FormCTRL'           ,function ($scope,$http,$localStorage,$sessionStorage){
-        _.log('FormCTRL:',$scope,$http,$localStorage,$sessionStorage,_.log.verbose);
-        _.FormCTRL          = this;
-        _.FormCTRL.scope    = $scope;
-        _.FormCTRL.http     = $http;
-        _.FormCTRL.DB       = $localStorage;
-        _.FormCTRL.session  = $sessionStorage;
-       
-        { //try to get country list online
-         $http({   method: 'GET'
-                  ,   url: './data/locations.json' })
-            .then(function(res) {
-                _.log('http country codes:' , res.data            ,_.log.info);
-                _.REMOTE_COUNTRY_CODES      = res.data;
-                _.boot();
-            }
-            ,function(err){ 
-                    if (err.status == -1 )  _.log('Cross Origin request ?¿'     ,err.status ,err.data    ,_.log.error);
-               else if (err.status <0    )  _.log('Unexpected STATUS'           ,err.status ,err.data    ,_.log.error);
-               else                         _.log(                               err.status ,err.data    ,_.log.error); 
-              _.boot();
-             } 
-            );
-        };       
+                            
+        app.config          (                         function($routeProvider){
 
-        $scope.items        =  [ {id:''         ,label:'LIST VIEW'}
-                                ,{id:'addAddr'  ,label:'ADD ADDRESS'}
-                              //,{id:'editAddr' ,label:'EDIT'} 
-                            ];
-        
-        $scope.selection    = $scope.items[_.default_view];
 
-        
-        $scope.data = _.fillFormWithFakeData ?  {   firstName: 'Bob'                
-                                            ,       lastName:  'Bouwer'              
-                                            ,       eMail:     'Bob.Bouwer@nowhere.net'    
-                                            ,       country:   'ES'                 
-                                            } : {};
+            $routeProvider
+                .when('/',{
+                        templateUrl: 'book-list.html'
+                })
+                .when('/add',{
+                        templateUrl: 'book-add.html'
+                });
 
-       
-        
-        $scope.submit = function() { _.log('submit',data,_.log.debug);
-         var data=$scope.data;
-         //data.firstNameErr=data.lastNameErr=''; //clear errors;
-         if ( typeof(data)              ==_.ND 
-           || typeof(data.firstName)    ==_.ND //required
-           || typeof(data.lastName)     ==_.ND //required
-           || typeof(data.eMail)        ==_.ND //required
-           || typeof(data.country)      ==_.ND //required
-           ){
-           _.log('incomplete or wrong data',data,_.log.warning);
-           //if (typeof(data.firstName)    ==_.ND) data.firstNameErr='ERROR!';
-           //if (typeof(data.lastName )    ==_.ND) data.lastNameErr ='ERROR!';
-         }
-         else {
+
+        });
+
+        app.controller      ('MainController'     ,   function($scope,$localStorage,$http,$location){
+            _.MainCTRL       = this;
+            _.MainCTRL.scope = $scope;
+            _.MainCTRL.DB    = $localStorage;
             
-            var DB=_.AddressBookCTRL.DB;
-			DB.idx =  _.isDF(DB.idx) ? DB.idx + 1 : 1;
+            _.log('MainCtrl:',$scope,_.log.verbose);
+            $scope.message="here we go";  
+            $scope.$on( "$routeChangeStart", function(event, next, current) {
+                _.log("route changing..", event,next,current);
+                if (_.isND(current) ) {
+                    if ( '/' == next.$$route.originalPath ) {
+                        
+                    } 
+                    else {
+                        $location.path( "/" ); // send to root if entry page
+                    }                
+                }
+                else if (_.isDF(next)) { // Both defined!
+                 if ( (next.$$route.originalPath=='/') 
+                    &&(current.$$route.originalPath=='/add') ){
+                    _.log("clean up 'newPeople list",_.log.verbose);
+                    delete $localStorage.newPeople;
+                 }                    
+                }
+            });
+            
+            { //try to get country list online
+            $http({   method: _.countryCodesGetVerb
+                  ,   url: _.countryCodesURL })
+                .then(function(res) {
+                    _.log('http country codes:' , res.data            ,_.log.info);
+                    _.REMOTE_COUNTRY_CODES      = res.data;
+                    _.boot();
+                }
+                ,function(err){ 
+                        if (err.status == -1 )  _.log('Cross Origin request ?¿'     ,err.status ,err.data    ,_.log.error);
+                   else if (err.status <0    )  _.log('Unexpected STATUS'           ,err.status ,err.data    ,_.log.error);
+                   else                         _.log(                               err.status ,err.data    ,_.log.error); 
+                   _.boot();
+                });
+            };       
+
+        });
+ 
+        app.controller      ('AddressBookCTRL'    ,   function ($scope,$http,$localStorage){
+            _.log('AddressBookCTRL:',$scope,$http,$localStorage,_.log.verbose);
+            _.AddressBookCTRL       = this;
+            _.AddressBookCTRL.scope = $scope;
+            _.AddressBookCTRL.http  = $http;
+            _.AddressBookCTRL.DB    = $localStorage;
+            $scope.people           = $localStorage.people;
         
-           _.log('adding address to local storage and model',data,DB.idx);//,_.log.info);
-           var newA= {  idx         :   DB.idx
-                    ,   firstName   :   data.firstName
-                    ,   lastName    :   data.lastName
-                    ,   eMail       :   data.eMail
-                    ,   country     :   data.country
-                    };
+            $scope.removeAddress=function (idx) { _.log('AddressBookCTRL::removeAddress',idx,_.log.debug);
+                var DB=$localStorage;
+                if (_.isND(DB.people)){
+                 _.log("ERROR: there's no people here!!",_.log.error);
+                 return;
+                }
+                var len=DB.people.length;
+                for (var i=0; i<len; i++){
+                    if (DB.people[i].idx==idx) { 
+                        DB.people.splice(i,1);
+                        break;
+                    }
+                }
+                $scope.people       = DB.people; // refresh (maybe unnecesary) DODO ( check it! )
+            }
+        });
+    
+        app.controller      ('FormCTRL'           ,   function ($scope,$http,$localStorage,$sessionStorage){
+            _.log('FormCTRL:',$scope,$http,$localStorage,$sessionStorage,_.log.verbose);
+            _.FormCTRL          = this;
+            _.FormCTRL.scope    = $scope;
+            _.FormCTRL.http     = $http;
+            _.FormCTRL.DB       = $localStorage;
+            _.FormCTRL.session  = $sessionStorage;
+            
+            $scope.locations    = _.MainCTRL.scope.locations;
+            $scope.newPeople    = $localStorage.newPeople;
+       
+
+            $scope.items        =  [ {id:''         ,label:'LIST VIEW'}
+                                    ,{id:'addAddr'  ,label:'ADD ADDRESS'}
+                                  //,{id:'editAddr' ,label:'EDIT'} 
+                                ];
+        
+            $scope.selection    = $scope.items[_.default_view];
+
+        
+            $scope.data         = _.fillFormWithFakeData ?  {   firstName: 'Bob'                
+                                                        ,       lastName:  'Bouwer'              
+                                                        ,       eMail:     'Bob.Bouwer@nowhere.net'    
+                                                        ,       country:   'ES'                 
+                                                        } : {};
+
+            $scope.removeAddress= function(idx) { _.AddressBookCTRL.scope.removeAddress(idx); }
+        
+            $scope.submit       = function() { _.log('submit',data,_.log.debug);
+                var data=$scope.data;
+                //data.firstNameErr=data.lastNameErr=''; //clear errors;
+                if (   typeof(data)              ==_.ND 
+                    || typeof(data.firstName)    ==_.ND //required
+                    || typeof(data.lastName)     ==_.ND //required
+                    || typeof(data.eMail)        ==_.ND //required
+                    || typeof(data.country)      ==_.ND //required
+                ){
+                    _.log('incomplete or wrong data',data,_.log.warning);
+                    //if (typeof(data.firstName)    ==_.ND) data.firstNameErr='ERROR!';
+                    //if (typeof(data.lastName )    ==_.ND) data.lastNameErr ='ERROR!';
+                }
+                else {
+                    var DB=_.AddressBookCTRL.DB;
+                        DB.idx =  _.isDF(DB.idx) ? DB.idx + 1 : 1;
+                        _.log('adding address to local storage and model',data,DB.idx);//,_.log.info);
+                        
+                    var newA= {  idx         :   DB.idx
+                             ,   firstName   :   data.firstName
+                             ,   lastName    :   data.lastName
+                             ,   eMail       :   data.eMail
+                             ,   country     :   data.country
+                             };
                     
-           DB.data = DB.data || [];                    
-           DB.data.push(newA);                             
-           _.AddressBookCTRL.scope.people=DB.data;
-         }
+                    DB.people        = DB.people    || [];                    
+                    DB.newPeople     = DB.newPeople || [];
+
+                    DB.people.push     (newA);     
+                    DB.newPeople.push(newA);
+                    $scope.newPeople=DB.newPeople;
+           
+                    _.AddressBookCTRL.scope.people=DB.people;
+                }
          
         };
         
-        $scope.interacted = function(field) { return $scope.submitted || field.$dirty; };
+
+        
+        
     });
     
 

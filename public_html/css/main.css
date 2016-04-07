@@ -32,7 +32,7 @@ h1{
 }
 
 .addr-list{
-   visibility:      hidden;
+   _visibility:      hidden;
    border-radius:   3px;
    margin:          0 auto;
    box-shadow:      3px 5px 7px #666;
