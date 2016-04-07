@@ -12,6 +12,11 @@ var _APP = {
     
     _APP.default_view           = 1;
     _APP.fillFormWithFakeData   = 0;
+
+    _APP.defaultGetVerb         = 'GET';
+    _APP.countryCodesGetVerb    = _APP.defaultGetVerb;
+    _APP.countryCodesURL        = './data/locations.json';
+    
 // Personal Logger  ----------------------------------------------------------    
     _APP.log            = function ()       { 
      var a = [];
@@ -171,8 +176,8 @@ var _APP = {
         _.FormCTRL.session  = $sessionStorage;
        
         { //try to get country list online
-         $http({   method: 'GET'
-                  ,   url: './data/locations.json' })
+            $http({   method:   _.countryCodesGetVerb
+                  ,   url:      _.countryCodesURL       })
             .then(function(res) {
                 _.log('http country codes:' , res.data            ,_.log.info);
                 _.REMOTE_COUNTRY_CODES      = res.data;
