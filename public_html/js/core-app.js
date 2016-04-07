@@ -112,13 +112,15 @@ var _APP = {
            
           } else{ 
                   _.MainCTRL.scope.locations = _.COUNTRY_CODES;        _.log('country codes comes from: HARD CODED'       ,_.log.info);  
-                  DB.COUNTRY_CODES = _.COUNTRY_CODES;
+                    DB.COUNTRY_CODES = _.COUNTRY_CODES;
             }
          }  else{ 
                   _.MainCTRL.scope.locations = _.DB_COUNTRY_CODES;     _.log('country codes comes from: LOCAL STORAGE'    ,_.log.info);  
                   
             }
-        }   else{ _.MainCTRL.scope.locations = _.REMOTE_COUNTRY_CODES; _.log('country codes comes from: SERVER'           ,_.log.info);  }
+        }   else{ _.MainCTRL.scope.locations = _.REMOTE_COUNTRY_CODES; _.log('country codes comes from: SERVER'           ,_.log.info);  
+                    DB.COUNTRY_CODES = _.COUNTRY_CODES;
+        }
         
         _.log('locations:',_.MainCTRL.scope.locations,_.log.debug);
         
@@ -148,7 +150,10 @@ var _APP = {
                             );
                             
         app.config          (                         function($routeProvider){
-
+            if (document.body.id == 'singlePageApp') {
+                //skip routing 
+            }           
+            else {
 
             $routeProvider
                 .when('/',{
@@ -158,7 +163,7 @@ var _APP = {
                         templateUrl: 'book-add.html'
                 });
 
-
+            };
         });
 
         app.controller      ('MainController'     ,   function($scope,$localStorage,$http,$location){
@@ -242,7 +247,7 @@ var _APP = {
             _.FormCTRL.DB       = $localStorage;
             _.FormCTRL.session  = $sessionStorage;
             
-            $scope.locations    = _.MainCTRL.scope.locations;
+            $scope.locations    = $localStorage.COUNTRY_CODES;
             $scope.newPeople    = $localStorage.newPeople;
        
 

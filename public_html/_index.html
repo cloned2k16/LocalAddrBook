@@ -6,8 +6,8 @@
   <script src="js/locations.js"                         type="text/javascript" charset="UTF-8"></script>
  </head>
  
-  <body>
-   <div class=header>
+  <body id=singlePageApp>
+   <div class=header ng-controller="MainController">
     <h1>My Local Address Book</h1>
     <div class="removeAllBTTN">
         <button id="destroyDB_BTTN" onclick="_.removeAll()">destroy DB</button>
@@ -17,7 +17,7 @@
    <select ng-model="selection" ng-options="item.label for item in items"></select>
    <div class="animate-switch-container" ng-switch on="selection.id">
     <div class="animate-switch" ng-switch-when="addAddr">  
-     <div ng-view="formView" class="newAddrBox" >
+     <div class="newAddrBox">
      <form  name="addAddrForm" 
             class="newAddr"
             ng-submit="submit()" 
@@ -91,7 +91,7 @@
    </div>
   </div>
   </div>
-   <div ng-controller="AddressBookCTRL" class="addr-list"> 
+   <div ng-controller="AddressBookCTRL" class="addr-list" unhidden> 
     <table width="100%">
      <tr class="addr-item" ng-repeat="addr in people | orderBy:'-lastName'">
       <td><div class="addr-idx"         >{{addr.idx}}</div></td>
@@ -104,7 +104,9 @@
    </table> 
   </div>
  
+   <!-- script src= "book-list.html"                        type="text/javascript"       charset="UTF-8"></script -->
    <script src= "js/angular.js"                         type="text/javascript" charset="UTF-8"></script>
+   <script src= "js/angular-route.js"                   type="text/javascript" charset="UTF-8"></script>
    <script src= "js/angular-messages.js"                type="text/javascript" charset="UTF-8"></script>
    <script src= "js/angular-animate.js"                 type="text/javascript" charset="UTF-8"></script>
    <script src= "js/ngStorage.js"                       type="text/javascript" charset="UTF-8"></script>
