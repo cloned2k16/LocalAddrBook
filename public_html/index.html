@@ -1,8 +1,8 @@
 <!DOCTYPE html>
  <html ng-app="app">
   <head>
-  <title>Address Book</title>
-  <link  href="css/main.css"                            rel="stylesheet" type="text/css">
+  <title>Local Address Book</title>
+  <link  href="css/main.css"                            rel="stylesheet"          type="text/css">
   <script src="js/locations.js"                         type="text/javascript" charset="UTF-8"></script>
  </head>
  
@@ -13,7 +13,7 @@
         <button id="destroyDB_BTTN" onclick="_.removeAll()">destroy DB</button>
    </div>
     <hr/>
-  <div ng-controller="FormCTRL" >
+    <div ng-controller="FormCTRL" >
    <select ng-model="selection" ng-options="item.label for item in items"></select>
    <div class="animate-switch-container" ng-switch on="selection.id">
     <div class="animate-switch" ng-switch-when="addAddr">  
@@ -22,7 +22,6 @@
             class="newAddr"
             ng-submit="submit()" 
             validate
-            id="formAddAddress"
             >
      
 <!--  -->
