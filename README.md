@@ -3,9 +3,9 @@ LocalAddrBook
 
 A single Page App that stores your contact address to a local storage available offline
 ``` cli
-the point of this version is to try give the user a great UX experience,
+the point of this version, is to try give to the end user, a great UX experience,
 by being able to have it working completely off line, 
-so for whatever reason the app goes suddenly offline (and maybe for a while),
+so for whatever reason the app goes suddenly offline (even for a while),
 almost everything will work just fine ...
 ```
 
