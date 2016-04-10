@@ -33,7 +33,7 @@ describe('LocalAddrBook', function() {
     });
   
   
-    describe('AddAddress Form validation'                             , function() {
+    describe('AddAddress Form validation'                               , function() {
         beforeEach(function() {
         });
   
@@ -77,14 +77,14 @@ describe('LocalAddrBook', function() {
         });
     
         it('should stop accept input if LastName is removed'            , function() {
-            firstName.sendKeys('Paolo');
+            firstName.sendKeys('John');
             lastName.clear();
             form.submit();
             expect(people.count()).toEqual(1); 
         });
     
         it('should stop accept input if Email is removed'               , function() {
-            lastName.sendKeys('Lioy');
+            lastName.sendKeys('Doe');
             eMail.clear();
             form.submit();
             expect(people.count()).toEqual(1); 
@@ -107,6 +107,19 @@ describe('LocalAddrBook', function() {
        
     });
 
+    describe('Delete Address validation'                                , function() {
+     it('should delete the correct data based on idx field'             , function() {
+      //TODO..
+      
+     });
+    });
+    
+    describe('Edit Address validation'                                  , function() {
+     it('should change the correct data based on idx field'             , function() {
+      //TODO..
+      
+     });
+    });
     //TODO .... put more test here ...
 });
     

@@ -55,32 +55,174 @@ var _APP = {
     }
     _APP.isLOGDebugEn   = function () { return this.LOG_LEVELS & this.log.debug    .logT; }
 // ---------------------------------------------------------------------------    
-    _APP.addEl          = function (t,i)    { 
-     var d=document;
-     var e=d.createElement(t);
-         e.id=i;
-     return e;
-    }   
-    
-    _APP.lazyLoad       = function (src)      { 
-     this.log('require',src);
-     var d = document;
-     var e = d.querySelector("script[src*='"+src+"']");
-     this.log(e);     
-     if (!e) {
-      var h = d.getElementsByTagName("head");
-      var e=this.addEl('SCRIPT','reqScript');
-      e.setAttribute('src', src);
-      e.setAttribute('type', 'text/javascript');
-      try { 
-       d.body.appendChild(e);
-      }
-      catch (e){ this.log("can't append script",e); }; 
-     }
-     this.log(e);     
-    }
-// ---------------------------------------------------------------------------    
+    _APP.removeAll      = function() {   _.log('removeAll()',_.log.verbose); //Helper function
+      _.AddressBookCTRL.DB.$reset();  
+      location.reload();
+    } 
 // ---------------------------------------------------------------------------------------------------------------------
+    var _ = _APP;
+                {       _.LOG_LEVELS     = 0
+                        //| _APP.log.verbose .logT
+                        //| _APP.log.debug   .logT
+                        | _APP.log.info    .logT
+                        //| _APP.log.warning .logT
+                        | _APP.log.error   .logT
+                        | _APP.log.panic   .logT
+                        ;
+    }
+
+
+    var app = angular.module(   'app'                      //bootstrapping angular and adding ngStorage 'n' ngMessages modules
+                            , [ 'ngStorage'
+                            ,   'ngAnimate'
+                            ,   'ngMessages' ] 
+                            );
+    
+    app.controller      ('AddressBookCTRL'    ,function ($scope,$http,$localStorage){
+        _.log('AddressBookCTRL:',$scope,$http,$localStorage,_.log.verbose);
+        _.AddressBookCTRL       =this;
+        _.AddressBookCTRL.scope =$scope;
+        _.AddressBookCTRL.DB    =$localStorage;
+        
+        $scope.people               = $localStorage.data;
+        
+        $scope.peopleLookUp         = function (id) {
+         var ppl=$localStorage.data;
+         var len= ppl.length;
+         for (var i=0; i<len; i++) {
+          if (ppl[i].idx==id) return ppl[i];
+         }
+         _.log("can't find any address having "+id+" as index" ,_.log.error);
+         return _.ND;
+        };
+                
+        $scope.editAddress          = function (idx) { _.log('editAddress',idx      );//,_.log.debug);
+         var scope=_.FormCTRL.scope;
+         scope.selection = scope.items[2];
+         var addr =  this.peopleLookUp(idx);
+         _.log('found:',addr);
+         if (_.isDF(addr)) {
+          scope.data.idx        = addr.idx;
+          scope.data.firstName  = addr.firstName;
+          scope.data.lastName   = addr.lastName;
+          scope.data.eMail      = addr.eMail;
+          scope.data.country    = addr.country;
+         }
+        };
+
+        $scope.removeAddress        = function (idx) { _.log('removeAddress',idx    ,_.log.debug);
+         var DB=$localStorage;
+         var len=DB.data.length;
+         for (var i=0; i<len; i++){
+            if (DB.data[i].idx==idx) { 
+             DB.data.splice(i,1);
+             break;
+            }
+         }
+        };
+        
+    });
+    
+    app.controller      ('FormCTRL'           ,function ($scope,$http,$localStorage,$sessionStorage){
+        _.log('FormCTRL:',$scope,$http,$localStorage,$sessionStorage,_.log.verbose);
+        _.FormCTRL          = this;
+        _.FormCTRL.scope    = $scope;
+       
+        { //try to get country list online
+            $http({   method:   _.countryCodesGetVerb
+                  ,   url:      _.countryCodesURL       })
+            .then(function(res) {
+                _.log('http country codes:' , res.data            ,_.log.info);
+                _.REMOTE_COUNTRY_CODES      = res.data;
+                _.boot();
+            }
+            ,function(err){ 
+                    if (err.status == -1 )  _.log('Cross Origin request ?¿'     ,err.status ,err.data    ,_.log.error);
+               else if (err.status <0    )  _.log('Unexpected STATUS'           ,err.status ,err.data    ,_.log.error);
+               else                         _.log(                               err.status ,err.data    ,_.log.error); 
+              _.boot();
+             } 
+            );
+        };       
+
+        $scope.items        =  [ {id:''         ,label:'LIST ADDRESSES'}
+                                ,{id:'addAddr'  ,label:'ADD  ADDRESS'}
+                                ,{id:'editAddr' ,label:'EDIT ADDRESS'} 
+                            ];
+        
+        $scope.selection    = $scope.items[_.default_view];
+
+        $scope.cleanUpForm  = function  () {
+         _.log("cleanUpForm", $scope.data ,_.log.debug);
+         $scope.data={}; // clean up form data
+        }
+        
+        $scope.data         = _.fillFormWithFakeData ?  {   firstName: 'Bob'                
+                                            ,       lastName:  'Bouwer'              
+                                            ,       eMail:     'Bob.Bouwer@nowhere.net'    
+                                            ,       country:   'ES'                 
+                                            } : {};
+
+       
+        
+        $scope.submit = function() { _.log('submit',data                    ,_.log.debug);
+         var data=$scope.data;
+         var isAddAddr = true;
+         if ($scope.selection.id=='editAddr'){
+          _.log('submit of edit addr:',data);
+          isAddAddr=false;
+         }         
+         
+         if ( typeof(data)              ==_.ND 
+           || typeof(data.firstName)    ==_.ND //required
+           || typeof(data.lastName)     ==_.ND //required
+           || typeof(data.eMail)        ==_.ND //required
+           || typeof(data.country)      ==_.ND //required
+           ){
+           _.log('incomplete or wrong data',data,_.log.warning);
+         
+         }
+         else {
+            
+            var DB=_.AddressBookCTRL.DB;
+            var dataID = data.idx;
+            
+            if (isAddAddr) {
+			 DB.idx =  (_.isDF(DB.idx) ? DB.idx + 1 : 1);
+             dataID=DB.idx;
+             _.log('adding address to local storage and model',data,dataID    ,_.log.info);
+            } 
+           
+           var newA= {  idx         :   dataID
+                    ,   firstName   :   data.firstName
+                    ,   lastName    :   data.lastName
+                    ,   eMail       :   data.eMail
+                    ,   country     :   data.country
+                    };
+                    
+           DB.data = DB.data || [];                    
+           if (isAddAddr){
+            DB.data.push(newA);                             
+            _.AddressBookCTRL.scope.people=DB.data;
+           }
+           else {
+            var people=DB.data;
+            var len=people.length;
+            for (var i=0; i<len; i++){
+             if (people[i].idx==newA.idx){
+              people[i]=newA;
+             }
+            }
+           }
+           
+           
+         }
+         
+        };
+        
+        
+    });
+    
     _APP.boot           = function (){
         _.log("BOOT..",_.log.verbose);
         _.byClass('addr-list').css('visibility','visible');
@@ -123,127 +265,6 @@ var _APP = {
         _.log('locations:',_.FormCTRL.scope.locations,_.log.debug);
         
     };
-    _APP.removeAll      = function() {   _.log('removeAll()',_.log.verbose); //Helper function
-      _.AddressBookCTRL.DB.$reset();  
-      location.reload();
-    } 
-// ---------------------------------------------------------------------------------------------------------------------
-    var _ = _APP;
-                {       _.LOG_LEVELS     = 0
-                        //| _APP.log.verbose .logT
-                        //| _APP.log.debug   .logT
-                        | _APP.log.info    .logT
-                        //| _APP.log.warning .logT
-                        | _APP.log.error   .logT
-                        | _APP.log.panic   .logT
-                        ;
-    }
-
-
-    var app = angular.module(   'app'                      //bootstrapping angular and adding ngStorage 'n' ngMessages modules
-                            , [ 'ngStorage'
-                            ,   'ngAnimate'
-                            ,   'ngMessages' ] 
-                            );
-    
-    app.controller('AddressBookCTRL'    ,function ($scope,$http,$localStorage){
-        _.log('AddressBookCTRL:',$scope,$http,$localStorage,_.log.verbose);
-        _.AddressBookCTRL=this;
-        _.AddressBookCTRL.scope =$scope;
-        _.AddressBookCTRL.http  =$http;
-        _.AddressBookCTRL.DB    =$localStorage;
-        $scope.people           =$localStorage.data;
-        
-        $scope.removeAddress=function (idx) { _.log('removeAddress',idx,_.log.debug);
-         var DB=$localStorage;
-         var len=DB.data.length;
-         for (var i=0; i<len; i++){
-            if (DB.data[i].idx==idx) { 
-             DB.data.splice(i,1);
-             break;
-            }
-         }
-         $scope.people       = DB.data; // refresh (maybe unnecesary) DODO ( check it! )
-        }
-    });
-    
-    app.controller('FormCTRL'           ,function ($scope,$http,$localStorage,$sessionStorage){
-        _.log('FormCTRL:',$scope,$http,$localStorage,$sessionStorage,_.log.verbose);
-        _.FormCTRL          = this;
-        _.FormCTRL.scope    = $scope;
-        _.FormCTRL.http     = $http;
-        _.FormCTRL.DB       = $localStorage;
-        _.FormCTRL.session  = $sessionStorage;
-       
-        { //try to get country list online
-            $http({   method:   _.countryCodesGetVerb
-                  ,   url:      _.countryCodesURL       })
-            .then(function(res) {
-                _.log('http country codes:' , res.data            ,_.log.info);
-                _.REMOTE_COUNTRY_CODES      = res.data;
-                _.boot();
-            }
-            ,function(err){ 
-                    if (err.status == -1 )  _.log('Cross Origin request ?¿'     ,err.status ,err.data    ,_.log.error);
-               else if (err.status <0    )  _.log('Unexpected STATUS'           ,err.status ,err.data    ,_.log.error);
-               else                         _.log(                               err.status ,err.data    ,_.log.error); 
-              _.boot();
-             } 
-            );
-        };       
-
-        $scope.items        =  [ {id:''         ,label:'LIST VIEW'}
-                                ,{id:'addAddr'  ,label:'ADD ADDRESS'}
-                              //,{id:'editAddr' ,label:'EDIT'} 
-                            ];
-        
-        $scope.selection    = $scope.items[_.default_view];
-
-        
-        $scope.data = _.fillFormWithFakeData ?  {   firstName: 'Bob'                
-                                            ,       lastName:  'Bouwer'              
-                                            ,       eMail:     'Bob.Bouwer@nowhere.net'    
-                                            ,       country:   'ES'                 
-                                            } : {};
-
-       
-        
-        $scope.submit = function() { _.log('submit',data,_.log.debug);
-         var data=$scope.data;
-         //data.firstNameErr=data.lastNameErr=''; //clear errors;
-         if ( typeof(data)              ==_.ND 
-           || typeof(data.firstName)    ==_.ND //required
-           || typeof(data.lastName)     ==_.ND //required
-           || typeof(data.eMail)        ==_.ND //required
-           || typeof(data.country)      ==_.ND //required
-           ){
-           _.log('incomplete or wrong data',data,_.log.warning);
-           //if (typeof(data.firstName)    ==_.ND) data.firstNameErr='ERROR!';
-           //if (typeof(data.lastName )    ==_.ND) data.lastNameErr ='ERROR!';
-         }
-         else {
-            
-            var DB=_.AddressBookCTRL.DB;
-			DB.idx =  _.isDF(DB.idx) ? DB.idx + 1 : 1;
-        
-           _.log('adding address to local storage and model',data,DB.idx);//,_.log.info);
-           var newA= {  idx         :   DB.idx
-                    ,   firstName   :   data.firstName
-                    ,   lastName    :   data.lastName
-                    ,   eMail       :   data.eMail
-                    ,   country     :   data.country
-                    };
-                    
-           DB.data = DB.data || [];                    
-           DB.data.push(newA);                             
-           _.AddressBookCTRL.scope.people=DB.data;
-         }
-         
-        };
-        
-        $scope.interacted = function(field) { return $scope.submitted || field.$dirty; };
-    });
-    
 
  
 
