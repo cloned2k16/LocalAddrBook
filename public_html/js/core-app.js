@@ -243,26 +243,28 @@ var _APP = {
         }
         
         
-        if (_.isND(_.REMOTE_COUNTRY_CODES)) { _.log("can't get country code from server.."        ,_.log.warning) 
-         _.log('_.REMOTE_COUNTRY_CODES',_.REMOTE_COUNTRY_CODES,_.log.verbose);
-         if (_.isND(_.DB_COUNTRY_CODES))    { _.log("can't get country code from local storage.." ,_.log.warning)
-          _.log('_.DB_COUNTRY_CODES',_.DB_COUNTRY_CODES,_.log.verbose);
-          if (_.isND(_.COUNTRY_CODES))      { _.log("can't get country code from code"            ,_.log.panic)  
+        if (_.isND(_.REMOTE_COUNTRY_CODES)) {   _.log("can't get country code from server.."            ,_.log.warning); 
+                                                _.log('_.REMOTE_COUNTRY_CODES',_.REMOTE_COUNTRY_CODES   ,_.log.verbose);
+         if (_.isND(_.DB_COUNTRY_CODES))    {   _.log("can't get country code from local storage.."     ,_.log.warning);
+                                                _.log('_.DB_COUNTRY_CODES',_.DB_COUNTRY_CODES           ,_.log.verbose);
+          if (_.isND(_.COUNTRY_CODES))      {   _.log("can't get country code from code"                ,_.log.panic);  
+                                                _.log('something went really wrong!!'                   ,_.log.panic);
+            // DO PANIC !!
+                                                
            
-            // DO PANIC!!
-            _.log('something whent really wrong!!',_.log.panic);
-           
-          } else{ 
-                  _.FormCTRL.scope.locations = _.COUNTRY_CODES;        _.log('country codes comes from: HARD CODED'       ,_.log.info);  
+          } 
+          else{ 
+                  _.FormCTRL.scope.locations = _.COUNTRY_CODES;     _.log('country codes came from: HARD CODED'       ,_.log.info);  
                   DB.COUNTRY_CODES = _.COUNTRY_CODES;
-            }
-         }  else{ 
-                  _.FormCTRL.scope.locations = _.DB_COUNTRY_CODES;     _.log('country codes comes from: LOCAL STORAGE'    ,_.log.info);  
+          }
+         }  
+         else{ 
+                  _.FormCTRL.scope.locations = _.DB_COUNTRY_CODES;  _.log('country codes came from: LOCAL STORAGE'    ,_.log.info);  
                   
-            }
-        }   else{ _.FormCTRL.scope.locations = _.REMOTE_COUNTRY_CODES; _.log('country codes comes from: SERVER'           ,_.log.info);  }
-        
-        _.log('locations:',_.FormCTRL.scope.locations,_.log.debug);
+         }
+        }   
+        else{ _.FormCTRL.scope.locations = _.REMOTE_COUNTRY_CODES;  _.log('country codes came from: SERVER'           ,_.log.info);  
+        }
         
     };
 
