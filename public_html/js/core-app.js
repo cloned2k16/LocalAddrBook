@@ -78,11 +78,12 @@ var _APP = {
                             ,   'ngMessages' ] 
                             );
     
-    app.controller      ('AddressBookCTRL'    ,function ($scope,$http,$localStorage){
-        _.log('AddressBookCTRL:',$scope,$http,$localStorage,_.log.verbose);
-        _.AddressBookCTRL       =this;
-        _.AddressBookCTRL.scope =$scope;
-        _.AddressBookCTRL.DB    =$localStorage;
+    app.controller      ('AddressBookCTRL'      ,function ($scope,$http,$localStorage){
+                   _.log('AddressBookCTRL:'               ,$scope,$http,$localStorage,_.log.verbose);
+        
+        _.AddressBookCTRL           = this;
+        _.AddressBookCTRL.scope     = $scope;
+        _.AddressBookCTRL.DB        = $localStorage;
         
         $scope.people               = $localStorage.data;
         
@@ -100,7 +101,10 @@ var _APP = {
          var scope=_.FormCTRL.scope;
          scope.selection = scope.items[2];
          var addr =  this.peopleLookUp(idx);
-         _.log('found:',addr);
+         _.log('found:',addr, _.log.debug);
+         
+         _.resizeAddressView(true);
+         
          if (_.isDF(addr)) {
           scope.data.idx        = addr.idx;
           scope.data.firstName  = addr.firstName;
@@ -120,13 +124,30 @@ var _APP = {
             }
          }
         };
+
+        _.resizeAddressView         = function (formVisible) { 
+            var wh  = window.innerHeight;         
+            var el  = document.querySelector('.addr-list');
+            var gap = formVisible? 500:140;
+            var min =  40;
+            var h   = wh>(gap+min)? wh - gap : min; 
+            var stl=''+h+'px';
+            _.log(el,stl,_.log.debug);
+            el.style.height=stl;
+        }
+        _.resizeAddressView(true);
         
+        var win = angular.element(window);       
+        win.bind('resize', function () {
+           _.log('resize',window.innerWidth,window.innerHeight);
+           _.resizeAddressView();
+        });
     });
     
-    app.controller      ('FormCTRL'           ,function ($scope,$http,$localStorage,$sessionStorage){
-        _.log('FormCTRL:',$scope,$http,$localStorage,$sessionStorage,_.log.verbose);
-        _.FormCTRL          = this;
-        _.FormCTRL.scope    = $scope;
+    app.controller      ('FormCTRL'             ,function ($scope,$http,$localStorage,$sessionStorage){
+                   _.log('FormCTRL:'                      ,$scope,$http,$localStorage,$sessionStorage,_.log.verbose);
+        _.FormCTRL                  = this;
+        _.FormCTRL.scope            = $scope;
        
         { //try to get country list online
             $http({   method:   _.countryCodesGetVerb
@@ -145,19 +166,20 @@ var _APP = {
             );
         };       
 
-        $scope.items        =  [ {id:''         ,label:'LIST ADDRESSES'}
-                                ,{id:'addAddr'  ,label:'ADD  ADDRESS'}
-                                ,{id:'editAddr' ,label:'EDIT ADDRESS'} 
-                            ];
+        $scope.items                =  [ {id:''         ,label:'LIST ADDRESSES'}
+                                        ,{id:'addAddr'  ,label:'ADD  ADDRESS'}
+                                        ,{id:'editAddr' ,label:'EDIT ADDRESS'} 
+                                    ];
         
-        $scope.selection    = $scope.items[_.default_view];
+        $scope.selection            = $scope.items[_.default_view];
 
-        $scope.cleanUpForm  = function  () {
-         _.log("cleanUpForm", $scope.data ,_.log.debug);
+        $scope.cleanUpForm          = function  () {
+         _.log("cleanUpForm", $scope.data );//,_.log.debug);
          $scope.data={}; // clean up form data
+         _.resizeAddressView($scope.selection.id!='');
         }
         
-        $scope.data         = _.fillFormWithFakeData ?  {   firstName: 'Bob'                
+        $scope.data                 = _.fillFormWithFakeData ?  {   firstName: 'Bob'                
                                             ,       lastName:  'Bouwer'              
                                             ,       eMail:     'Bob.Bouwer@nowhere.net'    
                                             ,       country:   'ES'                 
@@ -222,7 +244,8 @@ var _APP = {
         
         
     });
-    
+ 
+   
     _APP.boot           = function (){
         _.log("BOOT..",_.log.verbose);
         _.byClass('addr-list').css('visibility','visible');

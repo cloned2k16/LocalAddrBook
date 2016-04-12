@@ -21,13 +21,6 @@ h1                      {
     top:                8px; 
     right:              8px;
 }
-.name                   {
-    font-size:          18px; 
-}
-.city                   {
-    font-style:         italic;
-    font-size:          13px;
-}
 .addr-list              {
     visibility:         hidden;
     border-radius:      3px;
@@ -35,6 +28,8 @@ h1                      {
     box-shadow:         3px 5px 7px #666;
     background:         #69BABE;
     padding:            0px;
+    
+    overflow:           auto;
 }
 .addr-item              {
     background:         #EFA;
