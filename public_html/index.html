@@ -2,8 +2,7 @@
  <html ng-app="app">
   <head>
   <title>Local Address Book</title>
-  <link  href="css/main.css"                            rel="stylesheet"          type="text/css">
-  <script src="js/locations.js"                         type="text/javascript" charset="UTF-8"></script>
+  <link  href="css/main.css"                            rel="stylesheet"            type="text/css">
  </head>
  
   <body>
@@ -14,14 +13,14 @@
    </div>
     <hr/>
     <div ng-controller="FormCTRL" >
-   <select 
-    ng-model    ="selection" 
-    ng-change   ="cleanUpForm()"
-    ng-options  ="item.label for item in items"
-    ></select>
-   <div class="animate-switch-container"  ng-switch on="(selection.id=='addAddr') || (selection.id=='editAddr')">
-    <div class="animate-switch" ng-switch-when="true">  
-     <div ng-view="formView" class="newAddrBox" >
+     <select 
+        ng-model    ="selection" 
+        ng-change   ="cleanUpForm()"
+        ng-options  ="item.label for item in items"
+        ></select>
+     <div class="animate-switch-container"  ng-switch on="(selection.id=='addAddr') || (selection.id=='editAddr')">
+      <div class="animate-switch" ng-switch-when="true">  
+       <div ng-view="formView" class="newAddrBox" >
      <form  name="addAddrForm" 
             class="newAddr"
             ng-submit="submit()" 
@@ -98,9 +97,12 @@
     </form>
 
    </div>
+     </div>
+      <div class="animate-switch" ng-switch-default></div>
+    </div>
+   </div>
   </div>
-    <div class="animate-switch" ng-switch-default></div>
-  </div>
+  
    <div ng-controller="AddressBookCTRL" class="addr-list"> 
     <table width="100%">
      <tr class="addr-item" ng-repeat="addr in people | orderBy:'-lastName'">
@@ -115,12 +117,14 @@
    </table> 
   </div>
  
-   <script src= "js/angular.js"                         type="text/javascript" charset="UTF-8"></script>
-   <script src= "js/angular-messages.js"                type="text/javascript" charset="UTF-8"></script>
-   <script src= "js/angular-animate.js"                 type="text/javascript" charset="UTF-8"></script>
-   <script src= "js/ngStorage.js"                       type="text/javascript" charset="UTF-8"></script>
-
-   <script src= "js/core-app.js"                        type="text/javascript" charset="UTF-8"></script>
-   
+   <!-- SCRIPTS --> 
+   <div hidden>
+    <script src= "js/locations.js"                       type="text/javascript"     charset="UTF-8"></script>
+    <script src= "js/angular.js"                         type="text/javascript"     charset="UTF-8"></script>
+    <script src= "js/angular-messages.js"                type="text/javascript"     charset="UTF-8"></script>
+    <script src= "js/angular-animate.js"                 type="text/javascript"     charset="UTF-8"></script>
+    <script src= "js/ngStorage.js"                       type="text/javascript"     charset="UTF-8"></script>
+    <script src= "js/core-app.js"                        type="text/javascript"     charset="UTF-8"></script>
+  </div> 
  </body>
 </html>
