@@ -1,16 +1,39 @@
 body                    {
     font-family:        sans-serif;
     font-weight:        100;
-    background:         #EFE;
+    background:         #EEE;
 }
 h1                      {
     text-align:         center;
-    color:              #AEA;
+    color:              #666;
     text-shadow:        0px 2px 0px #fff;
 
 }
+table {
+    border:            1px solid black;
+}
+
+th  { 
+    border:            1px solid #AAA;
+    text-align:         left;
+    height:             32px;
+    background-color:   #EEE;
+    vertical-align:     middle;
+    font-family:        Times, Arial;
+    font-style:         bold;
+    font-size:          24;
+    padding-right:      66px;
+}
+
+td {
+   font-style:         italic;            
+   background-color:   #FFF;
+   border-bottom:      1px solid #ddd;
+   border-right:       1px solid #888;
+}
+
 .header                 {
-    background:         #0CAFE0;
+    background:         #EEE;
     border-radius:      3px;
     margin:             0 auto;
     box-shadow:         3px 5px 7px #666;
@@ -25,58 +48,56 @@ h1                      {
     visibility:         hidden;
     border-radius:      3px;
     margin:             0 auto;
-    box-shadow:         3px 5px 7px #666;
-    background:         #69BABE;
+    xbox-shadow:         3px 5px 7px #666;
+    xbackground:         #69BABE;
     padding:            0px;
     
     overflow:           auto;
 }
 .addr-item              {
-    background:         #EFA;
+    xbackground:         #EFA;
     padding:            20px;
 }
 .addr-name              {
-    border-bottom:      thin solid #999; 
+    xborder-bottom:      thin solid #999; 
     padding:            8px;
 }
 .addr-last              {
     font-weight:        bold;
-    border-bottom:      thin solid #999; 
+    xborder-bottom:      thin solid #999; 
     padding:            8px;
 }
 .addr-email             {
-    border-bottom:      thin solid #999; 
+    xborder-bottom:      thin solid #999; 
     padding:            8px;
 }
 .addr-country           {
-    border-bottom:      thin solid #999; 
+    xborder-bottom:      thin solid #999; 
     padding:            8px;
 }
 .addr-remove            {
-    background:         #cc7 url('../img/trash-icon.png') no-repeat ;
+    background:         url('../img/trash-icon.png') no-repeat ;
     cursor:             pointer;
     padding:            1px;
     margin:             0px;
     width:              24px;
     height:             24px;
-    border-radius:      3px;
+    xborder-radius:      3px;
 }
 .addr-edit              {
-    background:         #cc7 url('../img/edit-icon.png') no-repeat ;
+    background:         url('../img/edit-icon.png') no-repeat ;
     padding:            1px;
     margin:             0px;
     cursor:             pointer;
     width:              24px;
     height:             24px;
-    border:             1px;
-}
-.header                 {
+    xborder:             1px;
 }
 .newAddrBox             {
     border-radius:      3px;
     margin:             0 auto;
     box-shadow:         3px 5px 7px #666;
-    background:         #ACD;
+    background:         #F4F4F4;
     padding:            7px;
 }
 .newAddr                {
