@@ -48,31 +48,30 @@ td {
     visibility:         hidden;
     border-radius:      3px;
     margin:             0 auto;
-    xbox-shadow:         3px 5px 7px #666;
-    xbackground:         #69BABE;
+    box-shadow:         3px 5px 7px #666;
     padding:            0px;
     
     overflow:           auto;
 }
 .addr-item              {
-    xbackground:         #EFA;
+ 
     padding:            20px;
 }
 .addr-name              {
-    xborder-bottom:      thin solid #999; 
+     
     padding:            8px;
 }
 .addr-last              {
     font-weight:        bold;
-    xborder-bottom:      thin solid #999; 
+     
     padding:            8px;
 }
 .addr-email             {
-    xborder-bottom:      thin solid #999; 
+    
     padding:            8px;
 }
 .addr-country           {
-    xborder-bottom:      thin solid #999; 
+     
     padding:            8px;
 }
 .addr-remove            {
@@ -82,7 +81,6 @@ td {
     margin:             0px;
     width:              24px;
     height:             24px;
-    xborder-radius:      3px;
 }
 .addr-edit              {
     background:         url('../img/edit-icon.png') no-repeat ;
@@ -91,7 +89,6 @@ td {
     cursor:             pointer;
     width:              24px;
     height:             24px;
-    xborder:             1px;
 }
 .newAddrBox             {
     border-radius:      3px;
