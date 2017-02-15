@@ -2,7 +2,8 @@ LocalAddrBook
 =============
 [Try it here] (http://cloned2k16.github.io/LocalAddrBook/)
 
-A single Page App that stores your contact address to a local storage available offline
+A single Page App that stores your contact address  
+to a local storage also available offline
 ``` cli
 the point of this version, is to try give to the end user a great UX,
 by being able to have it working completely off line, 
