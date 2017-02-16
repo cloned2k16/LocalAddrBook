@@ -1,6 +1,6 @@
 LocalAddrBook 
 =============
-[Try it here] (http://cloned2k16.github.io/LocalAddrBook/)
+[TRY ME!] (http://cloned2k16.github.io/LocalAddrBook/)
 
 A single Page App that stores your contact address  
 to a local storage also available offline
