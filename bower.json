@@ -14,8 +14,8 @@
                     "tests"
                     ],
   "dependencies"    : {
-    "angular"           :   "^1.5.3",
-    "ngstorage"         :   "^0.3.10",
+    "angular"           :   "",
+    "ngstorage"         :   "",
     "angular-messages"  :   "",
     "angular-animate"   :   ""
   }
