@@ -15,6 +15,7 @@ so just open the html file straight away without hosting it anywere ..
 __How to run it__ 
 
 Either ..
+* by just open ti [HERE](https://cloned2k16.github.io/LocalAddrBook/)  
 * by just open "/public_html/index.html" file in your browser 
 * by using npm start then pointing your browser to http://localhost:1111/
 
